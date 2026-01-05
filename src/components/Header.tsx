@@ -38,7 +38,7 @@ const Header = () => {
 
           {/* Actions */}
           <div className="flex items-center gap-4">
-            <Button variant="ocean" size="sm" className="hidden sm:flex gap-2">
+            <Button variant="elegant" size="sm" className="hidden sm:flex gap-2">
               <ShoppingCart className="w-4 h-4" />
               <span>Cart (0)</span>
             </Button>
@@ -69,7 +69,7 @@ const Header = () => {
               <a href="#contact" className="text-foreground hover:text-ocean-medium transition-colors font-medium py-2">
                 Contact
               </a>
-              <Button variant="ocean" size="sm" className="w-full gap-2">
+              <Button variant="elegant" size="sm" className="w-full gap-2">
                 <ShoppingCart className="w-4 h-4" />
                 <span>Cart (0)</span>
               </Button>
