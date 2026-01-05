@@ -1,5 +1,5 @@
 // Image imports
-import oceanParadiseImg from "@/assets/webshop/ocean-paradise.jpg";
+import oceanParadiseImg from "@/assets/webshop/oceanparadise.png";
 import lobsterImg from "@/assets/webshop/lobster.jpg";
 import tunaTatakiImg from "@/assets/webshop/tuna-tataki.jpg";
 import oystersImg from "@/assets/webshop/oysters.jpg";
