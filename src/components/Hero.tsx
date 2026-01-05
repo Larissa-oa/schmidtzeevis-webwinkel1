@@ -39,10 +39,10 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-wrap gap-4 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-            <Button variant="hero" size="xl">
+            <Button variant="gold" size="xl">
               Shop Fresh Catch
             </Button>
-            <Button variant="heroOutline" size="xl">
+            <Button variant="elegantOutline" size="xl" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-navy">
               Our Story
             </Button>
           </div>

@@ -18,8 +18,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        serif: ['Playfair Display', 'ui-serif', 'Georgia', 'serif'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        serif: ['Cormorant Garamond', 'Georgia', 'ui-serif', 'serif'],
       },
       colors: {
         border: 'hsl(var(--border))',
@@ -73,6 +73,7 @@ export default {
           blue: 'hsl(var(--sea-blue))',
           light: 'hsl(var(--sea-light))'
         },
+        charcoal: 'hsl(var(--charcoal))',
         sidebar: {
           DEFAULT: 'hsl(var(--sidebar-background))',
           foreground: 'hsl(var(--sidebar-foreground))',

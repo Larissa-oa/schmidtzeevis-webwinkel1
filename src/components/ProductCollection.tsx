@@ -203,7 +203,7 @@ const ProductCollection = () => {
                     )}
                   </div>
                   <Button 
-                    variant="ocean" 
+                    variant="elegant" 
                     size="sm"
                     disabled={!product.inStock}
                   >

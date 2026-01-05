@@ -1,72 +1,55 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { collections } from "@/data/products";
+import { Button } from "@/components/ui/button";
 
 const CollectionsGrid = () => {
   return (
-    <section className="py-12 md:py-16 bg-cream">
+    <section className="py-14 md:py-20 bg-cream">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-10">
-          <span className="inline-block text-gold-dark text-sm font-medium mb-2 tracking-wide uppercase">
+        <div className="text-center mb-12">
+          <span className="inline-block text-gold-dark text-xs font-medium mb-3 tracking-[0.2em] uppercase">
             Ontdek ons assortiment
           </span>
-          <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground">
+          <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground tracking-tight">
             Collecties
           </h2>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {collections.slice(0, 8).map((collection, index) => (
+        {/* Grid - Show all collections */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {collections.map((collection) => (
             <Link
               key={collection.id}
               to={`/webshop/${collection.slug}`}
-              className="group relative bg-card rounded-lg overflow-hidden shadow-soft hover:shadow-card transition-all duration-300"
-              style={{ animationDelay: `${index * 0.05}s` }}
+              className="group relative aspect-[4/5] overflow-hidden bg-card"
             >
               {/* Image */}
-              <div className="aspect-[4/3] overflow-hidden bg-muted">
-                <img
-                  src={collection.image}
-                  alt={collection.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-navy/20 to-transparent" />
-              </div>
-
-              {/* Content overlay */}
-              <div className="absolute inset-0 flex flex-col justify-end p-5">
-                <h3 className="font-serif text-lg font-bold text-primary-foreground mb-1">
+              <img
+                src={collection.image}
+                alt={collection.name}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+              
+              {/* Content */}
+              <div className="absolute inset-0 flex flex-col justify-end p-6">
+                <h3 className="font-serif text-xl md:text-2xl font-semibold text-primary-foreground mb-4 tracking-tight">
                   {collection.name}
                 </h3>
-                <p className="text-sea-light text-sm mb-3 line-clamp-2 opacity-90">
-                  {collection.description}
-                </p>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-gold font-medium">
-                    {collection.productCount} producten
-                  </span>
-                  <span className="flex items-center gap-1 text-primary-foreground text-sm font-medium group-hover:gap-2 transition-all">
-                    Bekijk
-                    <ArrowRight className="w-4 h-4" />
-                  </span>
+                <div className="flex items-center gap-2 text-primary-foreground/90 text-sm font-medium group-hover:gap-3 transition-all duration-300">
+                  <span>Bekijk collectie</span>
+                  <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
+
+              {/* Subtle border on hover */}
+              <div className="absolute inset-0 border border-gold/0 group-hover:border-gold/30 transition-colors duration-300" />
             </Link>
           ))}
-        </div>
-
-        {/* View all link */}
-        <div className="text-center mt-8">
-          <Link 
-            to="/webshop/alle-producten" 
-            className="inline-flex items-center gap-2 text-navy font-medium hover:gap-3 transition-all"
-          >
-            Bekijk alle categorieën
-            <ArrowRight className="w-4 h-4" />
-          </Link>
         </div>
       </div>
     </section>

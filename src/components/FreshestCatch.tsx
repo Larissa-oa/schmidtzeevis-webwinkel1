@@ -132,7 +132,7 @@ const FreshestCatch = () => {
                   <span className="text-2xl font-bold text-ocean-medium">
                     ${fish.price}
                   </span>
-                  <Button variant="ocean" size="sm">
+                  <Button variant="elegant" size="sm">
                     Add to Cart
                   </Button>
                 </div>
