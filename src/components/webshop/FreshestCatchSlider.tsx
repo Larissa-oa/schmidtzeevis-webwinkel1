@@ -103,6 +103,25 @@ const FreshestCatchSlider = () => {
               </div>
             </Link>
           ))}
+          
+          {/* See all products card */}
+          <Link
+            to="/webshop/alle-producten"
+            className="flex-shrink-0 w-72 bg-navy group flex flex-col items-center justify-center aspect-square relative overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy-light to-navy opacity-90" />
+            <div className="relative z-10 text-center p-8">
+              <div className="w-16 h-16 mx-auto mb-6 border-2 border-gold/30 rounded-full flex items-center justify-center">
+                <ChevronRight className="w-8 h-8 text-gold" />
+              </div>
+              <h3 className="font-serif text-xl font-semibold text-primary-foreground mb-2">
+                Alle Producten
+              </h3>
+              <p className="text-primary-foreground/70 text-sm">
+                Bekijk ons complete assortiment
+              </p>
+            </div>
+          </Link>
         </div>
       </div>
     </section>

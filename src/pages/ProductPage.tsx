@@ -1,10 +1,11 @@
 import { useParams, Link } from "react-router-dom";
-import { ChevronRight, ChevronLeft, Minus, Plus, ShoppingCart, Clock, Fish, Shell, Waves } from "lucide-react";
+import { ChevronRight, ChevronLeft, Minus, Plus, ShoppingCart, Clock, Fish, Shell, Waves, X, BookOpen, Users, Timer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useRef } from "react";
 import WebshopHeader from "@/components/webshop/WebshopHeader";
 import WebshopFooter from "@/components/webshop/WebshopFooter";
 import { allProducts, featuredProducts, recipes, fishCalendar, type Product } from "@/data/products";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const monthNames = ["Jan", "Feb", "Mrt", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"];
 
@@ -13,6 +14,7 @@ const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState(0);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedRecipe, setSelectedRecipe] = useState<typeof recipes[0] | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const product = allProducts.find(p => p.id === productId);
@@ -277,98 +279,236 @@ const ProductPage = () => {
               </div>
               
               <div className="grid grid-cols-6 md:grid-cols-12 gap-2">
-                {productAvailability.map((month, idx) => (
-                  <div 
-                    key={month.month}
-                    className={`relative flex flex-col items-center p-4 transition-colors ${
-                      month.available 
-                        ? idx === currentMonth 
-                          ? 'bg-navy text-primary-foreground' 
-                          : 'bg-cream hover:bg-cream-dark' 
-                        : 'bg-muted/50'
-                    }`}
-                  >
-                    <span className={`text-xs font-medium mb-2 ${
-                      month.available 
-                        ? idx === currentMonth ? 'text-primary-foreground' : 'text-muted-foreground' 
-                        : 'text-muted-foreground/50'
-                    }`}>
-                      {month.month}
-                    </span>
-                    <div className={`w-8 h-8 flex items-center justify-center ${
-                      month.available ? '' : 'opacity-30'
-                    }`}>
-                      {month.available ? (
-                        <Fish className={`w-5 h-5 ${idx === currentMonth ? 'text-gold-light' : 'text-navy'}`} strokeWidth={1.5} />
-                      ) : (
-                        <Waves className="w-5 h-5 text-muted-foreground" strokeWidth={1.5} />
+                {productAvailability.map((month, idx) => {
+                  const isInSeason = month.available && (idx >= 4 && idx <= 8); // Peak season May-Sept
+                  const isCurrentMonth = idx === currentMonth;
+                  
+                  return (
+                    <div 
+                      key={month.month}
+                      className={`relative flex flex-col items-center p-4 transition-all duration-300 ${
+                        isCurrentMonth
+                          ? 'bg-navy text-primary-foreground ring-2 ring-gold ring-offset-2' 
+                          : isInSeason
+                            ? 'bg-emerald-50 hover:bg-emerald-100 border border-emerald-200' 
+                            : month.available
+                              ? 'bg-amber-50 hover:bg-amber-100 border border-amber-200' 
+                              : 'bg-slate-100 border border-slate-200'
+                      }`}
+                    >
+                      <span className={`text-xs font-medium mb-2 ${
+                        isCurrentMonth 
+                          ? 'text-primary-foreground' 
+                          : isInSeason
+                            ? 'text-emerald-700'
+                            : month.available
+                              ? 'text-amber-700'
+                              : 'text-slate-400'
+                      }`}>
+                        {month.month}
+                      </span>
+                      <div className="w-8 h-8 flex items-center justify-center">
+                        {month.available ? (
+                          <Fish className={`w-5 h-5 ${
+                            isCurrentMonth 
+                              ? 'text-gold' 
+                              : isInSeason 
+                                ? 'text-emerald-600' 
+                                : 'text-amber-600'
+                          }`} strokeWidth={1.5} />
+                        ) : (
+                          <Waves className="w-5 h-5 text-slate-300" strokeWidth={1.5} />
+                        )}
+                      </div>
+                      {isCurrentMonth && (
+                        <span className="absolute -top-1 -right-1 w-3 h-3 bg-gold rounded-full animate-pulse" />
                       )}
                     </div>
-                    {idx === currentMonth && (
-                      <span className="absolute -top-1 -right-1 w-2 h-2 bg-gold rounded-full" />
-                    )}
-                  </div>
-                ))}
+                  );
+                })}
               </div>
               
-              <div className="flex items-center justify-center gap-8 mt-6 text-sm">
+              <div className="flex flex-wrap items-center justify-center gap-6 mt-8 text-sm">
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-cream border border-border" />
-                  <span className="text-muted-foreground">Beschikbaar</span>
+                  <div className="w-4 h-4 bg-emerald-100 border border-emerald-300 rounded-sm" />
+                  <span className="text-foreground font-medium">In Seizoen</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-navy" />
-                  <span className="text-muted-foreground">Huidige maand</span>
+                  <div className="w-4 h-4 bg-amber-100 border border-amber-300 rounded-sm" />
+                  <span className="text-foreground font-medium">Beschikbaar</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-muted/50" />
-                  <span className="text-muted-foreground">Niet in seizoen</span>
+                  <div className="w-4 h-4 bg-navy rounded-sm" />
+                  <span className="text-foreground font-medium">Huidige Maand</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-slate-100 border border-slate-200 rounded-sm" />
+                  <span className="text-muted-foreground">Niet Beschikbaar</span>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Recipes */}
-        <section className="py-12 bg-cream border-t border-border">
+        {/* Recipes - Elegant Card Design */}
+        <section className="py-16 bg-gradient-to-b from-cream to-background border-t border-border">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-8">
+            <div className="text-center mb-12">
               <span className="inline-block text-gold-dark text-xs font-medium mb-3 tracking-[0.2em] uppercase">
-                Inspiratie
+                Culinaire Inspiratie
               </span>
-              <h2 className="font-serif text-2xl font-semibold text-foreground tracking-tight">
+              <h2 className="font-serif text-2xl md:text-3xl font-semibold text-foreground tracking-tight">
                 Recepten met dit product
               </h2>
+              <p className="text-muted-foreground mt-3 max-w-lg mx-auto text-sm">
+                Ontdek hoe u dit product kunt bereiden met onze chef-recepten
+              </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               {recipes.map((recipe) => (
-                <div
+                <button
                   key={recipe.id}
-                  className="bg-card group"
+                  onClick={() => setSelectedRecipe(recipe)}
+                  className="group text-left relative overflow-hidden rounded-lg bg-card shadow-sm hover:shadow-xl transition-all duration-500"
                 >
-                  <div className="aspect-video overflow-hidden bg-muted">
+                  {/* Image with overlay */}
+                  <div className="aspect-[4/3] overflow-hidden relative">
                     <img
                       src={recipe.image}
                       alt={recipe.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                    
+                    {/* Content overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="flex items-center gap-1.5 text-primary-foreground/80 text-xs">
+                          <Timer className="w-3.5 h-3.5" />
+                          <span>30 min</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 text-primary-foreground/80 text-xs">
+                          <Users className="w-3.5 h-3.5" />
+                          <span>4 pers</span>
+                        </div>
+                      </div>
+                      <h3 className="font-serif text-xl font-semibold text-primary-foreground mb-2 group-hover:text-gold transition-colors">
+                        {recipe.name}
+                      </h3>
+                      <p className="text-primary-foreground/70 text-sm line-clamp-2">
+                        {recipe.description}
+                      </p>
+                    </div>
                   </div>
-                  <div className="p-6 border border-t-0 border-border">
-                    <h3 className="font-serif text-lg font-semibold text-foreground mb-2">
-                      {recipe.name}
-                    </h3>
-                    <p className="text-muted-foreground text-sm mb-5 leading-relaxed">
-                      {recipe.description}
-                    </p>
-                    <Button variant="elegantOutline" size="sm" className="w-full">
-                      Bekijk recept
-                    </Button>
+                  
+                  {/* Hover indicator */}
+                  <div className="absolute top-4 right-4 w-10 h-10 bg-gold/0 group-hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100">
+                    <BookOpen className="w-5 h-5 text-navy" />
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>
         </section>
+
+        {/* Recipe Modal */}
+        <Dialog open={!!selectedRecipe} onOpenChange={() => setSelectedRecipe(null)}>
+          <DialogContent className="max-w-3xl p-0 overflow-hidden bg-card">
+            {selectedRecipe && (
+              <>
+                {/* Recipe Header Image */}
+                <div className="relative aspect-video">
+                  <img
+                    src={selectedRecipe.image}
+                    alt={selectedRecipe.name}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/30 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-8">
+                    <div className="flex items-center gap-4 mb-3">
+                      <div className="flex items-center gap-1.5 text-primary-foreground/80 text-sm">
+                        <Timer className="w-4 h-4" />
+                        <span>30 minuten</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-primary-foreground/80 text-sm">
+                        <Users className="w-4 h-4" />
+                        <span>4 personen</span>
+                      </div>
+                    </div>
+                    <h2 className="font-serif text-3xl font-semibold text-primary-foreground">
+                      {selectedRecipe.name}
+                    </h2>
+                  </div>
+                </div>
+
+                {/* Recipe Content */}
+                <div className="p-8">
+                  <p className="text-muted-foreground leading-relaxed mb-8">
+                    {selectedRecipe.description}
+                  </p>
+
+                  {/* Mock recipe steps */}
+                  <div className="mb-8">
+                    <h3 className="font-serif text-lg font-semibold text-foreground mb-4">Bereiding</h3>
+                    <ol className="space-y-3 text-sm text-muted-foreground">
+                      <li className="flex gap-3">
+                        <span className="flex-shrink-0 w-6 h-6 bg-navy text-primary-foreground rounded-full flex items-center justify-center text-xs font-medium">1</span>
+                        <span>Verwarm de oven voor op 180°C. Bereid alle ingrediënten voor.</span>
+                      </li>
+                      <li className="flex gap-3">
+                        <span className="flex-shrink-0 w-6 h-6 bg-navy text-primary-foreground rounded-full flex items-center justify-center text-xs font-medium">2</span>
+                        <span>Bereid de vis voor door deze schoon te maken en droog te deppen.</span>
+                      </li>
+                      <li className="flex gap-3">
+                        <span className="flex-shrink-0 w-6 h-6 bg-navy text-primary-foreground rounded-full flex items-center justify-center text-xs font-medium">3</span>
+                        <span>Breng op smaak met zeezout, peper en verse kruiden.</span>
+                      </li>
+                    </ol>
+                  </div>
+
+                  {/* Products used in recipe */}
+                  <div className="border-t border-border pt-8">
+                    <h3 className="font-serif text-lg font-semibold text-foreground mb-4">
+                      Producten in dit recept
+                    </h3>
+                    <p className="text-muted-foreground text-sm mb-6">
+                      Alle ingrediënten zijn verkrijgbaar in onze webwinkel
+                    </p>
+                    <div className="flex gap-4 overflow-x-auto pb-2">
+                      {selectedRecipe.products.map((productId) => {
+                        const recipeProduct = allProducts.find(p => p.id === productId);
+                        if (!recipeProduct) return null;
+                        return (
+                          <Link
+                            key={productId}
+                            to={`/webshop/product/${productId}`}
+                            onClick={() => setSelectedRecipe(null)}
+                            className="flex-shrink-0 w-40 group"
+                          >
+                            <div className="aspect-square overflow-hidden bg-muted rounded-lg mb-3">
+                              <img
+                                src={recipeProduct.image}
+                                alt={recipeProduct.name}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              />
+                            </div>
+                            <h4 className="font-medium text-foreground text-sm group-hover:text-navy transition-colors line-clamp-1">
+                              {recipeProduct.name}
+                            </h4>
+                            <p className="text-navy font-semibold text-sm">
+                              €{recipeProduct.price.toFixed(2).replace('.', ',')}
+                            </p>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </DialogContent>
+        </Dialog>
       </main>
       <WebshopFooter />
     </div>

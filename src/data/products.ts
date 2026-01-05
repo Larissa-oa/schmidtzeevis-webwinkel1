@@ -45,10 +45,18 @@ export interface Collection {
 
 export const collections: Collection[] = [
   {
+    id: "alle-producten",
+    name: "Alle Producten",
+    slug: "alle-producten",
+    description: "Bekijk ons complete assortiment",
+    image: verseVisImg,
+    productCount: 250
+  },
+  {
     id: "verse-vis",
     name: "Verse Vis",
     slug: "verse-vis",
-    description: "Elke dag meer dan 133 soorten verse vis, direct van de afslag",
+    description: "Elke dag vers van de afslag",
     image: verseVisImg,
     productCount: 133
   },
@@ -56,7 +64,7 @@ export const collections: Collection[] = [
     id: "specials",
     name: "Specials",
     slug: "specials",
-    description: "Exclusieve producten voor de fijnproever",
+    description: "Exclusieve producten",
     image: specialsImg,
     productCount: 24
   },
@@ -64,31 +72,15 @@ export const collections: Collection[] = [
     id: "schaal-schelpdieren",
     name: "Schaal- en Schelpdieren",
     slug: "schaal-schelpdieren",
-    description: "Kreeft, oesters, garnalen en meer delicatessen uit zee",
+    description: "Kreeft, oesters en meer",
     image: schaalSchelpdierenImg,
     productCount: 45
-  },
-  {
-    id: "schotels",
-    name: "Schotels",
-    slug: "schotels",
-    description: "Luxe vis- en zeevruchtenschotels voor elk moment",
-    image: schotelsImg,
-    productCount: 18
-  },
-  {
-    id: "sushi-sashimi",
-    name: "Sushi en Sashimi",
-    slug: "sushi-sashimi",
-    description: "Verse sashimi en sushi-kwaliteit vis",
-    image: sashimiImg,
-    productCount: 15
   },
   {
     id: "delicatessen",
     name: "Delicatessen",
     slug: "delicatessen",
-    description: "Gerookte vis, salades en andere delicatessen",
+    description: "Gerookte vis en salades",
     image: delicatessenImg,
     productCount: 32
   },
@@ -96,17 +88,81 @@ export const collections: Collection[] = [
     id: "kant-en-klaar",
     name: "Kant-en-klaar",
     slug: "kant-en-klaar",
-    description: "Bereid om direct te serveren of op te warmen",
+    description: "Direct te serveren",
     image: kantEnKlaarImg,
     productCount: 20
+  },
+  {
+    id: "schotels",
+    name: "Schotels",
+    slug: "schotels",
+    description: "Luxe schotels",
+    image: schotelsImg,
+    productCount: 18
+  },
+  {
+    id: "conserven",
+    name: "Conserven",
+    slug: "conserven",
+    description: "Vis uit blik",
+    image: delicatessenImg,
+    productCount: 15
   },
   {
     id: "diepvries",
     name: "Diepvries",
     slug: "diepvries",
-    description: "Ingevroren voor optimale versheid",
+    description: "Ingevroren voor versheid",
     image: diepvriesImg,
     productCount: 28
+  },
+  {
+    id: "sauzen",
+    name: "Sauzen",
+    slug: "sauzen",
+    description: "Sauzen en dressings",
+    image: delicatessenImg,
+    productCount: 12
+  },
+  {
+    id: "diversen",
+    name: "Diversen",
+    slug: "diversen",
+    description: "Overige producten",
+    image: kantEnKlaarImg,
+    productCount: 10
+  },
+  {
+    id: "sushi-sashimi",
+    name: "Sushi en Sashimi",
+    slug: "sushi-sashimi",
+    description: "Verse sashimi",
+    image: sashimiImg,
+    productCount: 15
+  },
+  {
+    id: "olie-azijn",
+    name: "Olie en Azijn",
+    slug: "olie-azijn",
+    description: "Premium oliën",
+    image: delicatessenImg,
+    productCount: 8
+  },
+  {
+    id: "kruiden-specerijen",
+    name: "Kruiden en Specerijen",
+    slug: "kruiden-specerijen",
+    description: "Kruiden voor vis",
+    image: specialsImg,
+    productCount: 14
+  },
+  {
+    id: "merchandise",
+    name: "Merchandise",
+    slug: "merchandise",
+    description: "Schmidt artikelen",
+    image: schotelsImg,
+    productCount: 6
   }
 ];
 
