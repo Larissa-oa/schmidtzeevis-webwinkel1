@@ -2,6 +2,7 @@ import { Search, ShoppingCart, User, Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import logoSz from "@/assets/logosz.png";
 
 const WebshopHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,31 +25,29 @@ const WebshopHeader = () => {
 
       {/* Main header */}
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between py-3 md:h-20">
           {/* Logo */}
-          <Link to="/webshop" className="flex items-center gap-3">
-            <div className="flex flex-col">
-              <span className="font-serif text-lg md:text-xl font-bold text-navy">Schmidt Zeevis</span>
+          <Link to="/webshop" className="flex items-center gap-2">
+            <img src={logoSz} alt="Schmidt Zeevis" className="h-8 w-auto" />
+            <div className="flex flex-col leading-tight">
+              <span className="font-serif text-lg md:text-xl font-bold text-navy tracking-tight">Schmidt Zeevis</span>
               <span className="text-[10px] md:text-xs text-muted-foreground tracking-wider uppercase">Rotterdam</span>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-12">
             <Link to="/webshop" className="text-foreground hover:text-navy transition-colors font-medium text-sm">
               Webwinkel
             </Link>
+            <Link to="/webshop" className="text-foreground hover:text-navy transition-colors font-medium text-sm">
+              Verse vangst
+            </Link>
+            <Link to="/webshop/alle-producten" className="text-foreground hover:text-navy transition-colors font-medium text-sm">
+              Alle producten
+            </Link>
             <Link to="/webshop/verse-vis" className="text-foreground hover:text-navy transition-colors font-medium text-sm">
-              Verse Vis
-            </Link>
-            <Link to="/webshop/schotels" className="text-foreground hover:text-navy transition-colors font-medium text-sm">
-              Schotels
-            </Link>
-            <Link to="/webshop/schaal-schelpdieren" className="text-foreground hover:text-navy transition-colors font-medium text-sm">
-              Zeevruchten
-            </Link>
-            <Link to="/webshop/delicatessen" className="text-foreground hover:text-navy transition-colors font-medium text-sm">
-              Delicatessen
+              Verse vis
             </Link>
           </nav>
 
@@ -83,17 +82,14 @@ const WebshopHeader = () => {
               <Link to="/webshop" className="text-foreground hover:bg-accent px-4 py-3 rounded-lg transition-colors font-medium">
                 Webwinkel
               </Link>
+              <Link to="/webshop" className="text-foreground hover:bg-accent px-4 py-3 rounded-lg transition-colors font-medium">
+                Verse vangst
+              </Link>
+              <Link to="/webshop/alle-producten" className="text-foreground hover:bg-accent px-4 py-3 rounded-lg transition-colors font-medium">
+                Alle producten
+              </Link>
               <Link to="/webshop/verse-vis" className="text-foreground hover:bg-accent px-4 py-3 rounded-lg transition-colors font-medium">
-                Verse Vis
-              </Link>
-              <Link to="/webshop/schotels" className="text-foreground hover:bg-accent px-4 py-3 rounded-lg transition-colors font-medium">
-                Schotels
-              </Link>
-              <Link to="/webshop/schaal-schelpdieren" className="text-foreground hover:bg-accent px-4 py-3 rounded-lg transition-colors font-medium">
-                Zeevruchten
-              </Link>
-              <Link to="/webshop/delicatessen" className="text-foreground hover:bg-accent px-4 py-3 rounded-lg transition-colors font-medium">
-                Delicatessen
+                Verse vis
               </Link>
             </div>
           </nav>

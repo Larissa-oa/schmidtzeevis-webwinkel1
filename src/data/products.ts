@@ -10,7 +10,24 @@ import delicatessenImg from "@/assets/webshop/delicatessen.jpg";
 import schaalSchelpdierenImg from "@/assets/webshop/schaal-schelpdieren.jpg";
 import kantEnKlaarImg from "@/assets/webshop/kant-en-klaar.jpg";
 import diepvriesImg from "@/assets/webshop/diepvries.jpg";
-import specialsImg from "@/assets/webshop/specials.jpg";
+
+
+// Collection images
+import alleImg from "@/assets/collecties/alle.avif";
+import conservenImg from "@/assets/collecties/conserven.avif";
+import delicatessenCollectieImg from "@/assets/collecties/delicatessen.jpg";
+import diepvriesCollectieImg from "@/assets/collecties/diepvries.jpg";
+import diversenImg from "@/assets/collecties/diversen.jpg";
+import kantenklaarImg from "@/assets/collecties/kantenklaar.jpg";
+import kruidenImg from "@/assets/collecties/kruiden.avif";
+import merchandiseImg from "@/assets/collecties/merchandise.jpg";
+import olieenazijnImg from "@/assets/collecties/olieenazijn.jpg";
+import sauzenImg from "@/assets/collecties/sauzen.jpg";
+import schaalEnSchelpdierenImg from "@/assets/collecties/SchaalenSchelpdieren.avif";
+import schotelsCollectieImg from "@/assets/collecties/schotels.jpg";
+import sushiensashimiImg from "@/assets/collecties/sushiensashimi.jpg";
+import versevisImg from "@/assets/collecties/versevis.avif";
+import specialsImg from "@/assets/collecties/specials.jpg";
 
 export interface ProductVariant {
   id: string;
@@ -49,7 +66,7 @@ export const collections: Collection[] = [
     name: "Alle Producten",
     slug: "alle-producten",
     description: "Bekijk ons complete assortiment",
-    image: verseVisImg,
+    image: alleImg,
     productCount: 250
   },
   {
@@ -57,7 +74,7 @@ export const collections: Collection[] = [
     name: "Verse Vis",
     slug: "verse-vis",
     description: "Elke dag vers van de afslag",
-    image: verseVisImg,
+    image: versevisImg,
     productCount: 133
   },
   {
@@ -73,7 +90,7 @@ export const collections: Collection[] = [
     name: "Schaal- en Schelpdieren",
     slug: "schaal-schelpdieren",
     description: "Kreeft, oesters en meer",
-    image: schaalSchelpdierenImg,
+    image: schaalEnSchelpdierenImg,
     productCount: 45
   },
   {
@@ -81,7 +98,7 @@ export const collections: Collection[] = [
     name: "Delicatessen",
     slug: "delicatessen",
     description: "Gerookte vis en salades",
-    image: delicatessenImg,
+    image: delicatessenCollectieImg,
     productCount: 32
   },
   {
@@ -89,7 +106,7 @@ export const collections: Collection[] = [
     name: "Kant-en-klaar",
     slug: "kant-en-klaar",
     description: "Direct te serveren",
-    image: kantEnKlaarImg,
+    image: kantenklaarImg,
     productCount: 20
   },
   {
@@ -97,7 +114,7 @@ export const collections: Collection[] = [
     name: "Schotels",
     slug: "schotels",
     description: "Luxe schotels",
-    image: schotelsImg,
+    image: schotelsCollectieImg,
     productCount: 18
   },
   {
@@ -105,7 +122,7 @@ export const collections: Collection[] = [
     name: "Conserven",
     slug: "conserven",
     description: "Vis uit blik",
-    image: delicatessenImg,
+    image: conservenImg,
     productCount: 15
   },
   {
@@ -113,7 +130,7 @@ export const collections: Collection[] = [
     name: "Diepvries",
     slug: "diepvries",
     description: "Ingevroren voor versheid",
-    image: diepvriesImg,
+    image: diepvriesCollectieImg,
     productCount: 28
   },
   {
@@ -121,7 +138,7 @@ export const collections: Collection[] = [
     name: "Sauzen",
     slug: "sauzen",
     description: "Sauzen en dressings",
-    image: delicatessenImg,
+    image: sauzenImg,
     productCount: 12
   },
   {
@@ -129,7 +146,7 @@ export const collections: Collection[] = [
     name: "Diversen",
     slug: "diversen",
     description: "Overige producten",
-    image: kantEnKlaarImg,
+    image: diversenImg,
     productCount: 10
   },
   {
@@ -137,7 +154,7 @@ export const collections: Collection[] = [
     name: "Sushi en Sashimi",
     slug: "sushi-sashimi",
     description: "Verse sashimi",
-    image: sashimiImg,
+    image: sushiensashimiImg,
     productCount: 15
   },
   {
@@ -145,7 +162,7 @@ export const collections: Collection[] = [
     name: "Olie en Azijn",
     slug: "olie-azijn",
     description: "Premium oliën",
-    image: delicatessenImg,
+    image: olieenazijnImg,
     productCount: 8
   },
   {
@@ -153,7 +170,7 @@ export const collections: Collection[] = [
     name: "Kruiden en Specerijen",
     slug: "kruiden-specerijen",
     description: "Kruiden voor vis",
-    image: specialsImg,
+    image: kruidenImg,
     productCount: 14
   },
   {
@@ -161,7 +178,7 @@ export const collections: Collection[] = [
     name: "Merchandise",
     slug: "merchandise",
     description: "Schmidt artikelen",
-    image: schotelsImg,
+    image: merchandiseImg,
     productCount: 6
   }
 ];
@@ -222,6 +239,17 @@ export const featuredProducts: Product[] = [
       { id: "oz-12", name: "12 stuks", price: 24.50 },
       { id: "oz-24", name: "24 stuks", price: 46.00 }
     ]
+  },
+  {
+    id: "zeebaars",
+    name: "Zeebaars",
+    description: "Verse zeebaars uit de Middellandse Zee.",
+    shortDescription: "Premium zeebaars",
+    price: 28.95,
+    priceLabel: "Per kg",
+    image: verseVisImg,
+    category: "verse-vis",
+    rating: 4.8
   }
 ];
 
@@ -309,24 +337,38 @@ export const allProducts: Product[] = [
 export const recipes = [
   {
     id: "recipe-1",
-    name: "Gegrilde Zeebaars met Citroen",
-    description: "Een klassiek recept dat de pure smaak van verse zeebaars laat schitteren.",
+    name: "Gegrilde Zeebaars met Kreeft Saus",
+    description: "Een verfijnd gerecht met gegrilde zeebaars bedekt met een romige kreeft saus. Perfect voor een bijzondere gelegenheid.",
     image: verseVisImg,
-    products: ["zeebaars"]
+    products: ["zeebaars", "canadese-kreeft", "gamba"]
   },
   {
     id: "recipe-2",
     name: "Fruits de Mer Platter",
-    description: "Imponeer uw gasten met een royale schaal vol zeevruchten.",
+    description: "Imponeer uw gasten met een royale schaal vol zeevruchten. Een feestelijk gerecht voor de echte liefhebber.",
     image: oceanParadiseImg,
-    products: ["oesters-zeeuwse", "gamba", "canadese-kreeft"]
+    products: ["canadese-kreeft", "oesters-zeeuwse", "gamba"]
   },
   {
     id: "recipe-3",
-    name: "Zalm Tartaar",
-    description: "Verfijnde tartaar van verse zalm met kappertjes en dille.",
+    name: "Zalm Tartaar met Oesters",
+    description: "Verfijnde tartaar van gerookte zalm met kappertjes, dille en verse Zeeuwse oesters. Een elegant voorgerecht.",
     image: delicatessenImg,
-    products: ["zalm-gerookt"]
+    products: ["zalm-gerookt", "oesters-zeeuwse"]
+  },
+  {
+    id: "recipe-4",
+    name: "Zeebaars op Bedje van Gamba's",
+    description: "Gegrilde zeebaarsfilet geserveerd op een bedje van gebakken gamba's met knoflook en peterselie.",
+    image: verseVisImg,
+    products: ["zeebaars", "gamba"]
+  },
+  {
+    id: "recipe-5",
+    name: "Kreeft Thermidor",
+    description: "Klassiek Frans gerecht met gekookte kreeft in een romige kaas-groente saus, geserveerd in de kreeftschaal.",
+    image: lobsterImg,
+    products: ["canadese-kreeft", "gamba"]
   }
 ];
 

@@ -38,10 +38,10 @@ const trustBadges = [
 
 const SocialProof = () => {
   return (
-    <section className="py-14 md:py-20 bg-background">
+    <section className="pt-8 pb-14 md:pt-10 md:pb-20 bg-background">
       <div className="container mx-auto px-4">
         {/* Trust badges */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border mb-20 md:mb-24 max-w-4xl mx-auto">
           {trustBadges.map((badge) => (
             <div 
               key={badge.title}
@@ -68,7 +68,7 @@ const SocialProof = () => {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 max-w-7xl mx-auto">
           {testimonials.map((testimonial) => (
             <div 
               key={testimonial.id}

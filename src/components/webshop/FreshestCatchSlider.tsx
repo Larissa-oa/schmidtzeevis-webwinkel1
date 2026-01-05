@@ -18,7 +18,7 @@ const FreshestCatchSlider = () => {
   };
 
   return (
-    <section className="py-14 md:py-20 bg-background">
+    <section className="py-14 md:py-20 bg-background border-t-0">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-10">
@@ -27,7 +27,7 @@ const FreshestCatchSlider = () => {
               Vandaag Vers
             </span>
             <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground tracking-tight">
-              Freshest Catch
+              Verse Vangst
             </h2>
             <p className="text-muted-foreground mt-3 max-w-md text-sm leading-relaxed">
               Geselecteerd door onze visexperts, elke dag vers van de afslag.

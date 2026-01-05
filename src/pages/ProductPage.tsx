@@ -5,19 +5,28 @@ import { useState, useRef } from "react";
 import WebshopHeader from "@/components/webshop/WebshopHeader";
 import WebshopFooter from "@/components/webshop/WebshopFooter";
 import { allProducts, featuredProducts, recipes, fishCalendar, type Product } from "@/data/products";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import vismesImg from "@/assets/webshop/vismes.png";
 
 const monthNames = ["Jan", "Feb", "Mrt", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"];
 
 const ProductPage = () => {
   const { productId } = useParams<{ productId: string }>();
   const [quantity, setQuantity] = useState(1);
+  const [addOnQuantity, setAddOnQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState(0);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedRecipe, setSelectedRecipe] = useState<typeof recipes[0] | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const product = allProducts.find(p => p.id === productId);
+  
+  // Mock add-on product (fish knife) - used across all products
+  const addOnProduct = {
+    id: "vis-mes",
+    name: "Vis Mes",
+    price: 24.95,
+    image: vismesImg
+  };
   
   // Mock multiple images
   const productImages = [product?.image, product?.image, product?.image].filter(Boolean);
@@ -142,10 +151,10 @@ const ProductPage = () => {
                         <button
                           key={variant.id}
                           onClick={() => setSelectedVariant(idx)}
-                          className={`px-4 py-2.5 border text-sm font-medium transition-colors ${
+                          className={`px-4 py-2.5 border text-sm font-medium transition-all ${
                             selectedVariant === idx
-                              ? "border-navy bg-navy text-primary-foreground"
-                              : "border-border hover:border-navy"
+                              ? "border-2 border-navy"
+                              : "border border-border hover:border-navy/50"
                           }`}
                         >
                           {variant.name}
@@ -155,42 +164,133 @@ const ProductPage = () => {
                   </div>
                 )}
 
-                {/* Quantity */}
-                <div className="mb-8">
-                  <label className="block text-sm font-medium text-foreground mb-3 tracking-wide">
-                    Aantal
-                  </label>
-                  <div className="inline-flex items-center border border-border">
-                    <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="p-3 hover:bg-accent transition-colors"
-                    >
-                      <Minus className="w-4 h-4" />
-                    </button>
-                    <span className="w-14 text-center font-medium">{quantity}</span>
-                    <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="p-3 hover:bg-accent transition-colors"
-                    >
-                      <Plus className="w-4 h-4" />
-                    </button>
+                {/* Quantity, Price & CTA */}
+                <div className="mb-6">
+                  {/* Mobile: Quantity and Price on same row, Button full width below */}
+                  <div className="lg:hidden space-y-4">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-foreground mb-2 tracking-wide">
+                          Aantal
+                        </label>
+                        <div className="inline-flex items-center border border-border">
+                          <button
+                            onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                            className="p-2.5 hover:bg-accent transition-colors"
+                          >
+                            <Minus className="w-4 h-4" />
+                          </button>
+                          <span className="w-12 text-center font-medium">{quantity}</span>
+                          <button
+                            onClick={() => setQuantity(quantity + 1)}
+                            className="p-2.5 hover:bg-accent transition-colors"
+                          >
+                            <Plus className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        {product.priceLabel && (
+                          <span className="text-xs text-muted-foreground block">{product.priceLabel}</span>
+                        )}
+                        <span className="text-2xl font-semibold text-navy">
+                          €{currentPrice.toFixed(2).replace('.', ',')}
+                        </span>
+                      </div>
+                    </div>
+                    <Button size="lg" variant="elegant" className="w-full gap-2">
+                      <ShoppingCart className="w-5 h-5" />
+                      Toevoegen aan winkelwagen
+                    </Button>
+                  </div>
+
+                  {/* Desktop: Original layout */}
+                  <div className="hidden lg:block">
+                    <div className="mb-8">
+                      <label className="block text-sm font-medium text-foreground mb-3 tracking-wide">
+                        Aantal
+                      </label>
+                      <div className="inline-flex items-center border border-border">
+                        <button
+                          onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                          className="p-3 hover:bg-accent transition-colors"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </button>
+                        <span className="w-14 text-center font-medium">{quantity}</span>
+                        <button
+                          onClick={() => setQuantity(quantity + 1)}
+                          className="p-3 hover:bg-accent transition-colors"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-6 mb-8">
+                      <div>
+                        {product.priceLabel && (
+                          <span className="text-sm text-muted-foreground">{product.priceLabel} </span>
+                        )}
+                        <span className="text-3xl font-semibold text-navy">
+                          €{currentPrice.toFixed(2).replace('.', ',')}
+                        </span>
+                      </div>
+                      <Button size="lg" variant="elegant" className="gap-2 flex-1 max-w-xs">
+                        <ShoppingCart className="w-5 h-5" />
+                        Toevoegen aan winkelwagen
+                      </Button>
+                    </div>
                   </div>
                 </div>
 
-                {/* Price & CTA */}
-                <div className="flex items-center gap-6 mb-8">
-                  <div>
-                    {product.priceLabel && (
-                      <span className="text-sm text-muted-foreground">{product.priceLabel} </span>
-                    )}
-                    <span className="text-3xl font-semibold text-navy">
-                      €{currentPrice.toFixed(2).replace('.', ',')}
-                    </span>
+                {/* Add-on Section */}
+                <div className="mb-8 pt-6 border-t border-border/60">
+                  <div className="flex items-center gap-2 mb-4">
+                    <h4 className="text-sm font-medium text-foreground">Add-on</h4>
                   </div>
-                  <Button size="lg" variant="elegant" className="gap-2 flex-1 max-w-xs">
-                    <ShoppingCart className="w-5 h-5" />
-                    Toevoegen aan winkelwagen
-                  </Button>
+                  <div className="flex items-start gap-4">
+                    {/* Add-on Image */}
+                    <div className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-muted">
+                      <img
+                        src={addOnProduct.image}
+                        alt={addOnProduct.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    
+                    {/* Add-on Info */}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-sm text-foreground mb-4">{addOnProduct.name}</p>
+                      <div className="flex items-center gap-3">
+                        {/* Quantity */}
+                        <div className="inline-flex items-center border border-border bg-background">
+                          <button
+                            onClick={() => setAddOnQuantity(Math.max(1, addOnQuantity - 1))}
+                            className="p-2 hover:bg-accent transition-colors"
+                          >
+                            <Minus className="w-3.5 h-3.5" />
+                          </button>
+                          <span className="w-10 text-center text-sm font-medium">{addOnQuantity}</span>
+                          <button
+                            onClick={() => setAddOnQuantity(addOnQuantity + 1)}
+                            className="p-2 hover:bg-accent transition-colors"
+                          >
+                            <Plus className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                        
+                        {/* Add to cart button */}
+                        <Button size="sm" variant="outline" className="px-4">
+                          <ShoppingCart className="w-4 h-4" />
+                        </Button>
+                        
+                        {/* Price */}
+                        <span className="text-sm font-semibold text-navy ml-auto">
+                          €{addOnProduct.price.toFixed(2).replace('.', ',')}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Delivery info */}
@@ -278,7 +378,7 @@ const ProductPage = () => {
                 </h2>
               </div>
               
-              <div className="grid grid-cols-6 md:grid-cols-12 gap-2">
+              <div className="grid grid-cols-6 md:grid-cols-12 gap-3">
                 {productAvailability.map((month, idx) => {
                   const isInSeason = month.available && (idx >= 4 && idx <= 8); // Peak season May-Sept
                   const isCurrentMonth = idx === currentMonth;
@@ -286,63 +386,46 @@ const ProductPage = () => {
                   return (
                     <div 
                       key={month.month}
-                      className={`relative flex flex-col items-center p-4 transition-all duration-300 ${
+                      className={`relative flex flex-col items-center justify-center p-4 transition-all duration-200 rounded-sm border ${
                         isCurrentMonth
-                          ? 'bg-navy text-primary-foreground ring-2 ring-gold ring-offset-2' 
-                          : isInSeason
-                            ? 'bg-emerald-50 hover:bg-emerald-100 border border-emerald-200' 
-                            : month.available
-                              ? 'bg-amber-50 hover:bg-amber-100 border border-amber-200' 
-                              : 'bg-slate-100 border border-slate-200'
-                      }`}
+                          ? 'border-2 border-foreground/50' 
+                          : 'border-border/60'
+                      } bg-muted/20`}
                     >
-                      <span className={`text-xs font-medium mb-2 ${
-                        isCurrentMonth 
-                          ? 'text-primary-foreground' 
-                          : isInSeason
-                            ? 'text-emerald-700'
-                            : month.available
-                              ? 'text-amber-700'
-                              : 'text-slate-400'
+                      <span className={`text-xs font-medium mb-2.5 ${
+                        month.available
+                          ? 'text-foreground'
+                          : 'text-muted-foreground'
                       }`}>
                         {month.month}
                       </span>
                       <div className="w-8 h-8 flex items-center justify-center">
                         {month.available ? (
                           <Fish className={`w-5 h-5 ${
-                            isCurrentMonth 
-                              ? 'text-gold' 
-                              : isInSeason 
-                                ? 'text-emerald-600' 
-                                : 'text-amber-600'
+                            isInSeason 
+                              ? 'text-green-600' 
+                              : 'text-gold'
                           }`} strokeWidth={1.5} />
                         ) : (
-                          <Waves className="w-5 h-5 text-slate-300" strokeWidth={1.5} />
+                          <Waves className="w-5 h-5 text-muted-foreground/30" strokeWidth={1.5} />
                         )}
                       </div>
-                      {isCurrentMonth && (
-                        <span className="absolute -top-1 -right-1 w-3 h-3 bg-gold rounded-full animate-pulse" />
-                      )}
                     </div>
                   );
                 })}
               </div>
               
-              <div className="flex flex-wrap items-center justify-center gap-6 mt-8 text-sm">
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-emerald-100 border border-emerald-300 rounded-sm" />
+              <div className="flex flex-wrap items-center justify-center gap-8 mt-10 text-sm">
+                <div className="flex items-center gap-3">
+                  <Fish className="w-4 h-4 text-green-600" strokeWidth={1.5} />
                   <span className="text-foreground font-medium">In Seizoen</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-amber-100 border border-amber-300 rounded-sm" />
+                <div className="flex items-center gap-3">
+                  <Fish className="w-4 h-4 text-gold" strokeWidth={1.5} />
                   <span className="text-foreground font-medium">Beschikbaar</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-navy rounded-sm" />
-                  <span className="text-foreground font-medium">Huidige Maand</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-slate-100 border border-slate-200 rounded-sm" />
+                <div className="flex items-center gap-3">
+                  <Waves className="w-4 h-4 text-muted-foreground/30" strokeWidth={1.5} />
                   <span className="text-muted-foreground">Niet Beschikbaar</span>
                 </div>
               </div>
@@ -350,7 +433,7 @@ const ProductPage = () => {
           </div>
         </section>
 
-        {/* Recipes - Elegant Card Design */}
+        {/* Recipes - Modern Accordion Design */}
         <section className="py-16 bg-gradient-to-b from-cream to-background border-t border-border">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
@@ -365,150 +448,159 @@ const ProductPage = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {recipes.map((recipe) => (
-                <button
-                  key={recipe.id}
-                  onClick={() => setSelectedRecipe(recipe)}
-                  className="group text-left relative overflow-hidden rounded-lg bg-card shadow-sm hover:shadow-xl transition-all duration-500"
-                >
-                  {/* Image with overlay */}
-                  <div className="aspect-[4/3] overflow-hidden relative">
-                    <img
-                      src={recipe.image}
-                      alt={recipe.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
-                    
-                    {/* Content overlay */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="flex items-center gap-1.5 text-primary-foreground/80 text-xs">
-                          <Timer className="w-3.5 h-3.5" />
-                          <span>30 min</span>
-                        </div>
-                        <div className="flex items-center gap-1.5 text-primary-foreground/80 text-xs">
-                          <Users className="w-3.5 h-3.5" />
-                          <span>4 pers</span>
-                        </div>
-                      </div>
-                      <h3 className="font-serif text-xl font-semibold text-primary-foreground mb-2 group-hover:text-gold transition-colors">
-                        {recipe.name}
-                      </h3>
-                      <p className="text-primary-foreground/70 text-sm line-clamp-2">
-                        {recipe.description}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  {/* Hover indicator */}
-                  <div className="absolute top-4 right-4 w-10 h-10 bg-gold/0 group-hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100">
-                    <BookOpen className="w-5 h-5 text-navy" />
-                  </div>
-                </button>
-              ))}
+            <div className="max-w-7xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Accordion type="single" collapsible className="w-full space-y-6">
+                  {recipes
+                    .filter((recipe) => recipe.products.includes(productId))
+                    .map((recipe, index) => {
+                      // Get upsell products (exclude current product)
+                      const upsellProducts = recipe.products
+                        .filter(productIdInRecipe => productIdInRecipe !== productId)
+                        .map(productIdInRecipe => allProducts.find(p => p.id === productIdInRecipe))
+                        .filter((p): p is Product => p !== undefined);
+                      
+                      return (
+                        <AccordionItem key={recipe.id} value={recipe.id} className="border border-border/60 rounded-lg bg-card overflow-hidden">
+                          <AccordionTrigger className="px-6 py-5 hover:no-underline group">
+                            <div className="flex items-start gap-5 w-full text-left">
+                              {/* Recipe Image */}
+                              <div className="flex-shrink-0 w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-muted">
+                                <img
+                                  src={recipe.image}
+                                  alt={recipe.name}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                              
+                              {/* Recipe Info */}
+                              <div className="flex-1 min-w-0">
+                                <h3 className="font-serif text-lg md:text-xl font-semibold text-foreground mb-1.5 group-hover:text-navy transition-colors">
+                                  {recipe.name}
+                                </h3>
+                                <p className="text-muted-foreground text-xs md:text-sm mb-2.5 line-clamp-2">
+                                  {recipe.description}
+                                </p>
+                                <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                                  <div className="flex items-center gap-1.5">
+                                    <Timer className="w-3.5 h-3.5" />
+                                    <span>30 min</span>
+                                  </div>
+                                  <div className="flex items-center gap-1.5">
+                                    <Users className="w-3.5 h-3.5" />
+                                    <span>4 pers</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </AccordionTrigger>
+                          
+                          <AccordionContent className="px-6 pb-6">
+                            <div className="pt-4 border-t border-border/60">
+                              {/* Recipe Description */}
+                              <div className="mb-6">
+                                <p className="text-foreground text-sm leading-relaxed mb-5">
+                                  {recipe.description}
+                                </p>
+                                
+                                {/* Ingredients */}
+                                <div className="mb-6">
+                                  <h4 className="font-serif text-base font-semibold text-foreground mb-3">Ingrediënten</h4>
+                                  <ul className="space-y-2">
+                                    {product && (
+                                      <li className="flex items-center gap-2 text-foreground text-xs md:text-sm font-medium">
+                                        <span className="w-1.5 h-1.5 bg-navy rounded-full flex-shrink-0"></span>
+                                        <span>{product.name}</span>
+                                      </li>
+                                    )}
+                                    {upsellProducts.map((upsellProduct) => (
+                                      <li key={upsellProduct.id} className="flex items-center gap-2 text-muted-foreground text-xs md:text-sm">
+                                        <span className="w-1.5 h-1.5 bg-navy rounded-full flex-shrink-0"></span>
+                                        <span>{upsellProduct.name}</span>
+                                      </li>
+                                    ))}
+                                    <li className="flex items-center gap-2 text-muted-foreground text-xs md:text-sm">
+                                      <span className="w-1.5 h-1.5 bg-navy rounded-full flex-shrink-0"></span>
+                                      <span>Olijfolie</span>
+                                    </li>
+                                    <li className="flex items-center gap-2 text-muted-foreground text-xs md:text-sm">
+                                      <span className="w-1.5 h-1.5 bg-navy rounded-full flex-shrink-0"></span>
+                                      <span>Zeezout en peper</span>
+                                    </li>
+                                    <li className="flex items-center gap-2 text-muted-foreground text-xs md:text-sm">
+                                      <span className="w-1.5 h-1.5 bg-navy rounded-full flex-shrink-0"></span>
+                                      <span>Verse kruiden (dille, peterselie)</span>
+                                    </li>
+                                    <li className="flex items-center gap-2 text-muted-foreground text-xs md:text-sm">
+                                      <span className="w-1.5 h-1.5 bg-navy rounded-full flex-shrink-0"></span>
+                                      <span>Citroen</span>
+                                    </li>
+                                  </ul>
+                                </div>
+                                
+                                {/* Recipe Steps */}
+                                <div>
+                                  <h4 className="font-serif text-base font-semibold text-foreground mb-3">Bereiding</h4>
+                                  <ol className="space-y-3">
+                                    <li className="flex gap-3">
+                                      <span className="flex-shrink-0 w-6 h-6 bg-navy text-primary-foreground rounded-full flex items-center justify-center text-xs font-medium">1</span>
+                                      <span className="text-muted-foreground text-xs md:text-sm pt-0.5">Verwarm de oven voor op 180°C. Bereid alle ingrediënten voor.</span>
+                                    </li>
+                                    <li className="flex gap-3">
+                                      <span className="flex-shrink-0 w-6 h-6 bg-navy text-primary-foreground rounded-full flex items-center justify-center text-xs font-medium">2</span>
+                                      <span className="text-muted-foreground text-xs md:text-sm pt-0.5">Bereid de vis voor door deze schoon te maken en droog te deppen.</span>
+                                    </li>
+                                    <li className="flex gap-3">
+                                      <span className="flex-shrink-0 w-6 h-6 bg-navy text-primary-foreground rounded-full flex items-center justify-center text-xs font-medium">3</span>
+                                      <span className="text-muted-foreground text-xs md:text-sm pt-0.5">Breng op smaak met zeezout, peper en verse kruiden. Bak of grill tot de vis gaar is.</span>
+                                    </li>
+                                  </ol>
+                                </div>
+                              </div>
+                              
+                              {/* Upsell Products */}
+                              {upsellProducts.length > 0 && (
+                                <div className="pt-5 border-t border-border/40">
+                                  <p className="text-xs text-muted-foreground mb-3 uppercase tracking-wider">
+                                    Andere producten voor dit recept
+                                  </p>
+                                  <div className="flex flex-wrap gap-3">
+                                    {upsellProducts.map((product) => (
+                                      <Link
+                                        key={product.id}
+                                        to={`/webshop/product/${product.id}`}
+                                        className="group flex flex-col w-28 flex-shrink-0"
+                                      >
+                                        <div className="aspect-square overflow-hidden bg-muted rounded-lg mb-2">
+                                          <img
+                                            src={product.image}
+                                            alt={product.name}
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                          />
+                                        </div>
+                                        <h5 className="font-medium text-foreground text-xs group-hover:text-navy transition-colors line-clamp-2 mb-1">
+                                          {product.name}
+                                        </h5>
+                                        <p className="text-navy font-semibold text-xs">
+                                          <span className="text-muted-foreground font-normal">vanaf </span>
+                                          €{product.price.toFixed(2).replace('.', ',')}
+                                        </p>
+                                      </Link>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      );
+                    })}
+                </Accordion>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Recipe Modal */}
-        <Dialog open={!!selectedRecipe} onOpenChange={() => setSelectedRecipe(null)}>
-          <DialogContent className="max-w-3xl p-0 overflow-hidden bg-card">
-            {selectedRecipe && (
-              <>
-                {/* Recipe Header Image */}
-                <div className="relative aspect-video">
-                  <img
-                    src={selectedRecipe.image}
-                    alt={selectedRecipe.name}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/30 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-8">
-                    <div className="flex items-center gap-4 mb-3">
-                      <div className="flex items-center gap-1.5 text-primary-foreground/80 text-sm">
-                        <Timer className="w-4 h-4" />
-                        <span>30 minuten</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-primary-foreground/80 text-sm">
-                        <Users className="w-4 h-4" />
-                        <span>4 personen</span>
-                      </div>
-                    </div>
-                    <h2 className="font-serif text-3xl font-semibold text-primary-foreground">
-                      {selectedRecipe.name}
-                    </h2>
-                  </div>
-                </div>
-
-                {/* Recipe Content */}
-                <div className="p-8">
-                  <p className="text-muted-foreground leading-relaxed mb-8">
-                    {selectedRecipe.description}
-                  </p>
-
-                  {/* Mock recipe steps */}
-                  <div className="mb-8">
-                    <h3 className="font-serif text-lg font-semibold text-foreground mb-4">Bereiding</h3>
-                    <ol className="space-y-3 text-sm text-muted-foreground">
-                      <li className="flex gap-3">
-                        <span className="flex-shrink-0 w-6 h-6 bg-navy text-primary-foreground rounded-full flex items-center justify-center text-xs font-medium">1</span>
-                        <span>Verwarm de oven voor op 180°C. Bereid alle ingrediënten voor.</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="flex-shrink-0 w-6 h-6 bg-navy text-primary-foreground rounded-full flex items-center justify-center text-xs font-medium">2</span>
-                        <span>Bereid de vis voor door deze schoon te maken en droog te deppen.</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="flex-shrink-0 w-6 h-6 bg-navy text-primary-foreground rounded-full flex items-center justify-center text-xs font-medium">3</span>
-                        <span>Breng op smaak met zeezout, peper en verse kruiden.</span>
-                      </li>
-                    </ol>
-                  </div>
-
-                  {/* Products used in recipe */}
-                  <div className="border-t border-border pt-8">
-                    <h3 className="font-serif text-lg font-semibold text-foreground mb-4">
-                      Producten in dit recept
-                    </h3>
-                    <p className="text-muted-foreground text-sm mb-6">
-                      Alle ingrediënten zijn verkrijgbaar in onze webwinkel
-                    </p>
-                    <div className="flex gap-4 overflow-x-auto pb-2">
-                      {selectedRecipe.products.map((productId) => {
-                        const recipeProduct = allProducts.find(p => p.id === productId);
-                        if (!recipeProduct) return null;
-                        return (
-                          <Link
-                            key={productId}
-                            to={`/webshop/product/${productId}`}
-                            onClick={() => setSelectedRecipe(null)}
-                            className="flex-shrink-0 w-40 group"
-                          >
-                            <div className="aspect-square overflow-hidden bg-muted rounded-lg mb-3">
-                              <img
-                                src={recipeProduct.image}
-                                alt={recipeProduct.name}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                              />
-                            </div>
-                            <h4 className="font-medium text-foreground text-sm group-hover:text-navy transition-colors line-clamp-1">
-                              {recipeProduct.name}
-                            </h4>
-                            <p className="text-navy font-semibold text-sm">
-                              €{recipeProduct.price.toFixed(2).replace('.', ',')}
-                            </p>
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-          </DialogContent>
-        </Dialog>
       </main>
       <WebshopFooter />
     </div>

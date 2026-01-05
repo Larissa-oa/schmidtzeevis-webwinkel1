@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const CollectionsGrid = () => {
   return (
-    <section className="py-14 md:py-20 bg-cream">
+    <section className="pt-8 pb-14 md:pt-10 md:pb-20 bg-cream">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
@@ -18,12 +18,12 @@ const CollectionsGrid = () => {
         </div>
 
         {/* Grid - Show all collections */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {collections.map((collection) => (
             <Link
               key={collection.id}
               to={`/webshop/${collection.slug}`}
-              className="group relative aspect-[4/5] overflow-hidden bg-card"
+              className="group relative aspect-[16/10] sm:aspect-[5/3] overflow-hidden bg-card"
             >
               {/* Image */}
               <img
