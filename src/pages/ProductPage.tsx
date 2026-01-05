@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { ChevronRight, ChevronLeft, Minus, Plus, ShoppingCart, Clock, Fish, Shell, Waves, X, BookOpen, Users, Timer } from "lucide-react";
+import { ChevronRight, ChevronLeft, Minus, Plus, ShoppingCart, Clock, Fish, Shell, Waves, X, BookOpen, Users, Timer, Truck, Package, AlertCircle, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useRef } from "react";
 import WebshopHeader from "@/components/webshop/WebshopHeader";
@@ -7,6 +7,8 @@ import WebshopFooter from "@/components/webshop/WebshopFooter";
 import { allProducts, featuredProducts, recipes, fishCalendar, type Product } from "@/data/products";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import vismesImg from "@/assets/webshop/vismes.png";
+import kreeft1Img from "@/assets/webshop/kreeft1.jpg";
+import kreeft2Img from "@/assets/webshop/kreeft2.jpg";
 
 const monthNames = ["Jan", "Feb", "Mrt", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"];
 
@@ -28,8 +30,10 @@ const ProductPage = () => {
     image: vismesImg
   };
   
-  // Mock multiple images
-  const productImages = [product?.image, product?.image, product?.image].filter(Boolean);
+  // Product images - use kreeft images for canadese-kreeft, otherwise repeat main image
+  const productImages = productId === "canadese-kreeft" 
+    ? [product?.image, kreeft1Img, kreeft2Img].filter(Boolean)
+    : [product?.image, product?.image, product?.image].filter(Boolean);
 
   // Related products
   const relatedProducts = featuredProducts.filter(p => p.id !== productId).slice(0, 4);
@@ -136,9 +140,15 @@ const ProductPage = () => {
                   {product.name}
                 </h1>
 
-                <p className="text-muted-foreground mb-8 leading-relaxed">
+                <p className="text-muted-foreground mb-4 leading-relaxed">
                   {product.description}
                 </p>
+                {product.weight && (
+                  <p className="text-muted-foreground mb-8 text-sm">
+                    Gewicht per stuk: {product.weight} gram (levend gewicht)
+                  </p>
+                )}
+                {!product.weight && <div className="mb-8"></div>}
 
                 {/* Variants */}
                 {product.variants && product.variants.length > 0 && (
@@ -293,13 +303,99 @@ const ProductPage = () => {
                   </div>
                 </div>
 
-                {/* Delivery info */}
-                <div className="p-5 bg-cream border border-border">
-                  <div className="flex items-center gap-3 text-sm">
-                    <Clock className="w-5 h-5 text-navy" strokeWidth={1.5} />
-                    <span className="text-muted-foreground">
-                      <strong className="text-foreground">Bezorging:</strong> Mogelijk vanaf €50,- | Afhalen altijd mogelijk
-                    </span>
+                {/* Allergens & Delivery info */}
+                <div className="border border-border bg-card">
+                  {/* Allergens & Nutritional Info Accordion */}
+                  <div className="p-4 border-b border-border">
+                    <Accordion type="single" collapsible className="w-full">
+                      <AccordionItem value="nutritional-info" className="border-0">
+                        <AccordionTrigger className="px-0 py-2 hover:no-underline">
+                          <div className="flex items-center gap-2.5">
+                            <AlertCircle className="w-4 h-4 text-navy" strokeWidth={1.5} />
+                            <span className="font-medium text-foreground text-xs tracking-wide">Allergenen & Voedingswaarde</span>
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="px-0 pb-2 pt-3">
+                          <div className="space-y-5">
+                            {/* Allergens */}
+                            <div>
+                              <h3 className="font-semibold text-foreground text-xs mb-2 tracking-wide">Allergenen</h3>
+                              <p className="text-xs text-muted-foreground leading-relaxed">
+                                Dit product kan sporen bevatten van schaaldieren, vis en weekdieren.
+                              </p>
+                            </div>
+                            
+                            <div className="h-px bg-border"></div>
+                            
+                            {/* Nutritional Info */}
+                            <div>
+                              <h3 className="font-semibold text-foreground text-xs mb-3 tracking-wide">Voedingswaarde per 100 gram</h3>
+                              <div className="space-y-2">
+                                <div className="flex justify-between items-center text-xs">
+                                  <span className="text-muted-foreground">Energie</span>
+                                  <span className="font-medium text-foreground">520 kJ / 124 kcal</span>
+                                </div>
+                                <div className="flex justify-between items-center text-xs">
+                                  <span className="text-muted-foreground">Vetten</span>
+                                  <span className="font-medium text-foreground">2,5 g</span>
+                                </div>
+                                <div className="flex justify-between items-center text-xs">
+                                  <span className="text-muted-foreground">waarvan verzadigd</span>
+                                  <span className="font-medium text-foreground">0,5 g</span>
+                                </div>
+                                <div className="flex justify-between items-center text-xs">
+                                  <span className="text-muted-foreground">Koolhydraten</span>
+                                  <span className="font-medium text-foreground">0 g</span>
+                                </div>
+                                <div className="flex justify-between items-center text-xs">
+                                  <span className="text-muted-foreground">Eiwitten</span>
+                                  <span className="font-medium text-foreground">24 g</span>
+                                </div>
+                                <div className="flex justify-between items-center text-xs">
+                                  <span className="text-muted-foreground">Zout</span>
+                                  <span className="font-medium text-foreground">0,8 g</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  </div>
+
+                  {/* Delivery info */}
+                  <div className="p-4 space-y-4">
+                    <div className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-navy/5 flex items-center justify-center">
+                        <Truck className="w-5 h-5 text-navy" strokeWidth={1.5} />
+                      </div>
+                      <div className="flex-1 space-y-1.5">
+                        <h3 className="font-semibold text-foreground text-sm tracking-wide">Bezorging</h3>
+                        <div className="space-y-1 text-sm text-muted-foreground">
+                          <p className="flex items-center gap-2">
+                            <CheckCircle2 className="w-4 h-4 text-green-600" strokeWidth={1.5} />
+                            <span>Gratis vanaf €50,- | Dinsdag, woensdag, donderdag</span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="h-px bg-border"></div>
+                    
+                    <div className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-navy/5 flex items-center justify-center">
+                        <Package className="w-5 h-5 text-navy" strokeWidth={1.5} />
+                      </div>
+                      <div className="flex-1 space-y-1.5">
+                        <h3 className="font-semibold text-foreground text-sm tracking-wide">Afhalen</h3>
+                        <div className="space-y-1 text-sm text-muted-foreground">
+                          <p className="flex items-center gap-2">
+                            <CheckCircle2 className="w-4 h-4 text-green-600" strokeWidth={1.5} />
+                            <span>Altijd mogelijk | Ma-Vr 09:00-18:00, Rotterdam</span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -307,66 +403,8 @@ const ProductPage = () => {
           </div>
         </section>
 
-        {/* Upsell slider */}
-        <section className="py-12 bg-cream border-y border-border">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="font-serif text-2xl font-semibold text-foreground tracking-tight">
-                Vaak samen gekocht
-              </h2>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => scroll("left")}
-                  className="p-2 border border-border hover:bg-background transition-colors"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={() => scroll("right")}
-                  className="p-2 bg-navy text-primary-foreground hover:bg-navy-light transition-colors"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-            <div
-              ref={scrollRef}
-              className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 -mx-4 px-4"
-            >
-              {relatedProducts.map((p) => (
-                <Link
-                  key={p.id}
-                  to={`/webshop/product/${p.id}`}
-                  className="flex-shrink-0 w-64 bg-card group"
-                >
-                  <div className="aspect-square overflow-hidden bg-muted">
-                    <img
-                      src={p.image}
-                      alt={p.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="p-4 border border-t-0 border-border">
-                    <h3 className="font-serif font-semibold text-foreground mb-1 line-clamp-1">
-                      {p.name}
-                    </h3>
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold text-navy">
-                        €{p.price.toFixed(2).replace('.', ',')}
-                      </span>
-                      <Button size="sm" variant="elegantOutline">
-                        Bekijk
-                      </Button>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Fish Calendar - Visual Calendar Design */}
-        <section className="py-12 bg-background">
+        <section className="py-12 bg-cream border-y border-border">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-8">
@@ -433,6 +471,64 @@ const ProductPage = () => {
           </div>
         </section>
 
+        {/* Upsell slider */}
+        <section className="py-12 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="font-serif text-2xl font-semibold text-foreground tracking-tight">
+                Vaak samen gekocht
+              </h2>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => scroll("left")}
+                  className="p-2 border border-border hover:bg-background transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => scroll("right")}
+                  className="p-2 bg-navy text-primary-foreground hover:bg-navy-light transition-colors"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+            <div
+              ref={scrollRef}
+              className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 -mx-4 px-4"
+            >
+              {relatedProducts.map((p) => (
+                <Link
+                  key={p.id}
+                  to={`/webshop/product/${p.id}`}
+                  className="flex-shrink-0 w-64 bg-card group"
+                >
+                  <div className="aspect-square overflow-hidden bg-muted">
+                    <img
+                      src={p.image}
+                      alt={p.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="p-4 border border-t-0 border-border">
+                    <h3 className="font-serif font-semibold text-foreground mb-1 line-clamp-1">
+                      {p.name}
+                    </h3>
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-navy">
+                        €{p.price.toFixed(2).replace('.', ',')}
+                      </span>
+                      <Button size="sm" variant="elegantOutline">
+                        Bekijk
+                      </Button>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Recipes - Modern Accordion Design */}
         <section className="py-16 bg-gradient-to-b from-cream to-background border-t border-border">
           <div className="container mx-auto px-4">
@@ -448,9 +544,8 @@ const ProductPage = () => {
               </p>
             </div>
             
-            <div className="max-w-7xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Accordion type="single" collapsible className="w-full space-y-6">
+            <div className="max-w-4xl mx-auto">
+              <Accordion type="single" collapsible className="w-full space-y-6">
                   {recipes
                     .filter((recipe) => recipe.products.includes(productId))
                     .map((recipe, index) => {
@@ -596,7 +691,6 @@ const ProductPage = () => {
                       );
                     })}
                 </Accordion>
-              </div>
             </div>
           </div>
         </section>

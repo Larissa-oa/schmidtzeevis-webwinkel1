@@ -10,6 +10,9 @@ import delicatessenImg from "@/assets/webshop/delicatessen.jpg";
 import schaalSchelpdierenImg from "@/assets/webshop/schaal-schelpdieren.jpg";
 import kantEnKlaarImg from "@/assets/webshop/kant-en-klaar.jpg";
 import diepvriesImg from "@/assets/webshop/diepvries.jpg";
+import octopusImg from "@/assets/webshop/octopus.avif";
+import dutchshrimpImg from "@/assets/webshop/dutchshrimp.avif";
+import seabassImg from "@/assets/webshop/seabass.avif";
 
 
 // Collection images
@@ -49,6 +52,7 @@ export interface Product {
   variants?: ProductVariant[];
   portions?: string[];
   inStock?: boolean;
+  weight?: number; // Weight in grams for standard portion
 }
 
 export interface Collection {
@@ -185,44 +189,54 @@ export const collections: Collection[] = [
 
 export const featuredProducts: Product[] = [
   {
-    id: "ocean-paradise",
-    name: "Ocean Paradise",
-    description: "Een luxueuze schotel met de beste vruchten van de zee. Inclusief Noordzeekrab, gamba's, Zeeuwse oesters en gerookte zalm.",
-    shortDescription: "Luxe fruits de mer schotel",
-    price: 69.50,
-    priceLabel: "Vanaf",
-    image: oceanParadiseImg,
-    category: "schotels",
-    badge: "Populair",
-    rating: 4.9,
-    variants: [
-      { id: "op-2", name: "Ocean Paradise 2 personen", price: 69.50 },
-      { id: "op-4", name: "Ocean Paradise 4 personen", price: 129.50 }
-    ]
+    id: "zeebaars",
+    name: "Zeebaars",
+    description: "Verse zeebaars uit de Middellandse Zee.",
+    shortDescription: "Premium zeebaars",
+    price: 28.95,
+    priceLabel: "Per kg",
+    image: seabassImg,
+    category: "verse-vis",
+    rating: 4.8,
+    weight: 250
+  },
+  {
+    id: "Octopus",
+    name: "Octopus",
+    description: "Verse octopus, perfect voor de grill of in een wokgerecht.",
+    shortDescription: "Verse octopus",
+    price: 22.95,
+    priceLabel: "Per kg",
+    image: octopusImg,
+    category: "schaal-schelpdieren",
+    badge: "Speciale aanbieding",
+    rating: 4.7,
+    weight: 300
+  },
+  {
+    id: "hollandse-garnaal",
+    name: "Hollandse Garnaal",
+    description: "Verse Hollandse garnaal, direct van de Nederlandse kust.",
+    shortDescription: "Verse Hollandse garnaal",
+    price: 19.95,
+    priceLabel: "Per kg",
+    image: dutchshrimpImg,
+    category: "schaal-schelpdieren",
+    rating: 4.8,
+    weight: 200
   },
   {
     id: "canadese-kreeft",
-    name: "Canadese Kreeft Gekookt",
-    description: "Vers gekookte Canadese kreeft, perfect als hoofdgerecht of als onderdeel van uw fruits de mer.",
+    name: "Gekookt Kreeft",
+    description: "Vers gekookte kreeft, perfect als hoofdgerecht of als onderdeel van uw fruits de mer.",
     shortDescription: "Vers gekookte kreeft",
     price: 38.50,
     priceLabel: "Vanaf",
     image: lobsterImg,
     category: "schaal-schelpdieren",
     badge: "Chef's Keuze",
-    rating: 5.0
-  },
-  {
-    id: "tonijn-tataki",
-    name: "Tonijn Tataki",
-    description: "Gebakken tonijn in dunne plakken met sesamkorst, geserveerd met sojadressing en wasabi.",
-    shortDescription: "Gebakken tonijn met sesam",
-    price: 18.95,
-    priceLabel: "Vanaf",
-    image: tunaTatakiImg,
-    category: "sushi-sashimi",
-    badge: "Nieuw",
-    rating: 4.8
+    rating: 5.0,
+    weight: 400
   },
   {
     id: "oesters-zeeuwse",
@@ -234,22 +248,12 @@ export const featuredProducts: Product[] = [
     image: oystersImg,
     category: "schaal-schelpdieren",
     rating: 4.9,
+    weight: 180,
     variants: [
       { id: "oz-6", name: "6 stuks", price: 12.90 },
       { id: "oz-12", name: "12 stuks", price: 24.50 },
       { id: "oz-24", name: "24 stuks", price: 46.00 }
     ]
-  },
-  {
-    id: "zeebaars",
-    name: "Zeebaars",
-    description: "Verse zeebaars uit de Middellandse Zee.",
-    shortDescription: "Premium zeebaars",
-    price: 28.95,
-    priceLabel: "Per kg",
-    image: verseVisImg,
-    category: "verse-vis",
-    rating: 4.8
   }
 ];
 
@@ -263,6 +267,7 @@ export const allProducts: Product[] = [
     priceLabel: "Vanaf",
     image: schotelsImg,
     category: "schotels",
+    weight: 800,
     variants: [
       { id: "sr-2", name: "Schmidt Royale 2 personen", price: 99.50 },
       { id: "sr-4", name: "Schmidt Royale 4 personen", price: 189.50 }
@@ -275,7 +280,8 @@ export const allProducts: Product[] = [
     price: 89.50,
     priceLabel: "Vanaf",
     image: verseVisImg,
-    category: "schotels"
+    category: "schotels",
+    weight: 600
   },
   {
     id: "fruits-de-mer",
@@ -284,7 +290,8 @@ export const allProducts: Product[] = [
     price: 99.50,
     priceLabel: "Vanaf",
     image: schaalSchelpdierenImg,
-    category: "schotels"
+    category: "schotels",
+    weight: 850
   },
   {
     id: "sashimischotel",
@@ -293,7 +300,8 @@ export const allProducts: Product[] = [
     price: 57.50,
     priceLabel: "Vanaf",
     image: sashimiImg,
-    category: "sushi-sashimi"
+    category: "sushi-sashimi",
+    weight: 200
   },
   {
     id: "kaviaar-elite",
@@ -303,7 +311,8 @@ export const allProducts: Product[] = [
     priceLabel: "Vanaf",
     image: specialsImg,
     category: "delicatessen",
-    badge: "Premium"
+    badge: "Premium",
+    weight: 50
   },
   {
     id: "gamba",
@@ -312,7 +321,8 @@ export const allProducts: Product[] = [
     price: 24.95,
     priceLabel: "Vanaf",
     image: schaalSchelpdierenImg,
-    category: "schaal-schelpdieren"
+    category: "schaal-schelpdieren",
+    weight: 250
   },
   {
     id: "zalm-gerookt",
@@ -321,7 +331,8 @@ export const allProducts: Product[] = [
     price: 32.50,
     priceLabel: "Per kg",
     image: delicatessenImg,
-    category: "delicatessen"
+    category: "delicatessen",
+    weight: 150
   },
   {
     id: "zeebaars",
@@ -330,7 +341,8 @@ export const allProducts: Product[] = [
     price: 28.95,
     priceLabel: "Per kg",
     image: verseVisImg,
-    category: "verse-vis"
+    category: "verse-vis",
+    weight: 250
   }
 ];
 
