@@ -10,7 +10,7 @@ import delicatessenImg from "@/assets/webshop/delicatessen.jpg";
 import schaalSchelpdierenImg from "@/assets/webshop/schaal-schelpdieren.jpg";
 import kantEnKlaarImg from "@/assets/webshop/kant-en-klaar.jpg";
 import diepvriesImg from "@/assets/webshop/diepvries.jpg";
-import octopusImg from "@/assets/webshop/octopus.avif";
+import octopusImg from "@/assets/webshop/squid.avif";
 import dutchshrimpImg from "@/assets/webshop/dutchshrimp.avif";
 import seabassImg from "@/assets/webshop/seabass.avif";
 
