@@ -1,4 +1,5 @@
 import { Crown, ShieldCheck, Truck, Quote } from "lucide-react";
+import { useEffect } from "react";
 
 const testimonials = [
   {
@@ -37,6 +38,16 @@ const trustBadges = [
 ];
 
 const SocialProof = () => {
+  useEffect(() => {
+    // Load Trustpilot script if not already loaded
+    if (!document.querySelector('script[src*="trustpilot.com"]')) {
+      const script = document.createElement('script');
+      script.src = '//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js';
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  }, []);
+
   return (
     <section className="pt-8 pb-14 md:pt-10 md:pb-20 bg-background">
       <div className="container mx-auto px-4">
@@ -63,9 +74,31 @@ const SocialProof = () => {
           <span className="inline-block text-gold-dark text-xs font-medium mb-3 tracking-[0.2em] uppercase">
             Klantbeoordelingen
           </span>
-          <h2 className="font-serif text-2xl md:text-3xl font-semibold text-foreground tracking-tight">
+          <h2 className="font-serif text-2xl md:text-3xl font-semibold text-foreground tracking-tight mb-6">
             Wat onze klanten zeggen
           </h2>
+          
+          {/* Trustpilot Widget */}
+          <div className="flex justify-center">
+            <div 
+              className="trustpilot-widget scale-75 origin-center" 
+              data-locale="en-US" 
+              data-template-id="53aa8807dec7e10d38f59f32" 
+              data-businessunit-id="62e8dfb8b92b34e1c629da7c" 
+              data-style-height="150px" 
+              data-style-width="100%" 
+              data-token="40a6d903-d5e5-4d9c-9ae3-734c0f44eed4"
+            >
+              <a 
+                href="https://www.trustpilot.com/review/eatsous.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="sr-only"
+              >
+                Trustpilot
+              </a>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 max-w-7xl mx-auto">

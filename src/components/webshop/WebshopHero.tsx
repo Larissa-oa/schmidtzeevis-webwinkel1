@@ -1,13 +1,13 @@
 const WebshopHero = () => {
   return (
     <section className="relative bg-navy overflow-hidden">
-      {/* Subtle wave pattern */}
-      <div className="absolute inset-0 opacity-[0.07]">
-        <svg className="absolute bottom-0 w-full h-32" viewBox="0 0 1440 100" preserveAspectRatio="none">
+      {/* Wave pattern */}
+      <div className="absolute inset-0 opacity-[0.15]">
+        <svg className="absolute bottom-0 w-full h-40" viewBox="0 0 1440 120" preserveAspectRatio="none">
           <path 
             fill="currentColor" 
             className="text-gold-light"
-            d="M0,50 C360,80 720,20 1080,50 C1260,65 1380,45 1440,50 L1440,100 L0,100 Z"
+            d="M0,60 C360,100 720,20 1080,60 C1260,80 1380,40 1440,60 L1440,120 L0,120 Z"
           />
         </svg>
       </div>
